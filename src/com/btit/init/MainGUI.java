@@ -8,7 +8,6 @@ package com.btit.init;
 import com.btit.gui.ConnectDialog;
 import com.btit.gui.CreateServerDialog;
 import com.btit.gui.DesktopPanel;
-import com.btit.gui.ChatWindow;
 import com.btit.impls.BTITRemote;
 import java.io.IOException;
 import javax.swing.JOptionPane;
@@ -91,6 +90,7 @@ public class MainGUI extends javax.swing.JFrame {
         mnFuncs.setText("Funcs");
 
         mnChat.setText("Chat");
+        mnChat.setEnabled(false);
         mnChat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnChatActionPerformed(evt);
@@ -151,11 +151,9 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mnServerModeActionPerformed
 
     private void mnChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnChatActionPerformed
-        ChatWindow singleChat = new ChatWindow();
-        desktopPanel.add(singleChat);
-        desktopPanel.setOpaque(false);
-        
-        singleChat.setVisible(true);
+        if(btitRemote.isEstablished()) {
+            BTITRemote.chatWindow.setVisible(true);
+        }
     }//GEN-LAST:event_mnChatActionPerformed
 
     private void mnDisConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDisConnectActionPerformed
@@ -180,6 +178,7 @@ public class MainGUI extends javax.swing.JFrame {
         mnClientMode.setEnabled(!established);
         mnServerMode.setEnabled(!established);
         mnDisConnect.setEnabled(established);
+        mnChat.setEnabled(established);
     }
 
     public DesktopPanel getDesktopPanel() {

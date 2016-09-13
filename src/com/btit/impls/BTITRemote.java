@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 public class BTITRemote extends Thread {
 
     private MainGUI mainGUI;
-    private static ChatWindow chatWindow;
+    public static ChatWindow chatWindow;
 
     private ServerSocket serverSocket = null;
     private Socket socket;
@@ -43,31 +43,36 @@ public class BTITRemote extends Thread {
 
     private ArrayList<Socket> socketConnected;
 
+    private String name;
     private int mode;
+    private boolean established = false;
 
     private ScreenshotReceiver screenshotReceiver;
     private ScreenshotSender screenshotSender;
     private CommandsReceiver commandsReceiver;
+    private MessageSender messageSender;
 
     public BTITRemote(Socket socket) {
         this.socket = socket;
+        chatWindow = new ChatWindow(this);
+        mainGUI.getDesktopPanel().add(chatWindow);
     }
 
     public BTITRemote(MainGUI mainGUI) {
         this.mainGUI = mainGUI;
+        chatWindow = new ChatWindow(this);
+        mainGUI.getDesktopPanel().add(chatWindow);
     }
 
-    public BTITRemote() {
-        chatWindow = new ChatWindow();
-    }
-    
-    public boolean createClient(String ip, int port) {
+    public boolean createClient(String name, String ip, int port) {
         try {
             socket = new Socket(ip, port);
             socket.setSoTimeout(2000);
             this.setSocket(socket);
             this.setMode(RMMode.CLIENT_MODE);
-            mainGUI.established(true);
+            this.setName(name);
+            setEstablished(true);
+            mainGUI.established(isEstablished());
 
             // Get default screen device
             GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -83,12 +88,13 @@ public class BTITRemote extends Thread {
         }
     }
 
-    public boolean createServer(int port) {
+    public boolean createServer(String name, int port) {
         try {
             robot = new Robot();
             this.setServerSocket(new ServerSocket(port));
             this.setMode(RMMode.SERVER_MODE);
-            mainGUI.established(true);
+            setEstablished(true);
+            mainGUI.established(isEstablished());
             return true;
         } catch (IOException | AWTException ex) {
             Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,28 +102,34 @@ public class BTITRemote extends Thread {
         return false;
     }
 
-    public boolean createRoom(int port) {
+    public boolean createRoom(String name, int port) {
         try {
             robot = new Robot();
             socketConnected = new ArrayList<>();
             this.setServerSocket(new ServerSocket(port));
+            this.setName(name);
             threadQueue = new ArrayBlockingQueue<>(100);
             socketPool = new ThreadPoolExecutor(5, 500, 15, TimeUnit.MINUTES, threadQueue);
             setMode(RMMode.ROOM_MODE);
-            mainGUI.established(true);
+            setEstablished(true);
+            mainGUI.established(isEstablished());
             return true;
         } catch (IOException | AWTException ex) {
             Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
-    
-    public void sendMessage(ChatWindow chatWindow) {
-        
+
+    public void sendMessage(String message) {
+        if (!chatWindow.isVisible()) {
+            chatWindow.setVisible(true);
+            messageSender.send(message);
+        }
     }
 
     @Override
     public void run() {
+        new MessageSender(socket, getName());
         if (mode == RMMode.SERVER_MODE.getCode()) {
             try {
                 socket = serverSocket.accept();
@@ -152,10 +164,18 @@ public class BTITRemote extends Thread {
         }
     }
 
+    public boolean isEstablished() {
+        return established;
+    }
+
+    public void setEstablished(boolean established) {
+        this.established = established;
+    }
+    
     public static ChatWindow getChatWindow() {
         return chatWindow;
     }
-    
+
     public void setMode(RMMode mode) {
         this.mode = mode.getCode();
     }

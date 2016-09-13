@@ -5,6 +5,7 @@
  */
 package com.btit.gui;
 
+import com.btit.impls.BTITRemote;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
@@ -13,12 +14,14 @@ import javax.swing.JTextArea;
  * @author BaoToan
  */
 public class ChatWindow extends javax.swing.JInternalFrame {
-
+    private BTITRemote btitRemote;
     /**
      * Creates new form SingleChat
+     * @param btitRemote
      */
-    public ChatWindow() {
+    public ChatWindow(BTITRemote btitRemote) {
         initComponents();
+        this.btitRemote = btitRemote;
     }
     
     public JTextArea getTaTypedMess() {
@@ -54,6 +57,11 @@ public class ChatWindow extends javax.swing.JInternalFrame {
 
         taTypedMess.setColumns(20);
         taTypedMess.setRows(5);
+        taTypedMess.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                taTypedKeypressed(evt);
+            }
+        });
         scrollPaneTypedMess.setViewportView(taTypedMess);
 
         btnSend.setText("Send");
@@ -86,6 +94,12 @@ public class ChatWindow extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void taTypedKeypressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taTypedKeypressed
+        if(evt.getKeyCode() == 13) {
+            
+        }
+    }//GEN-LAST:event_taTypedKeypressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

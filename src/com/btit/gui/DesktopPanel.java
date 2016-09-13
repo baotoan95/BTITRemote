@@ -16,6 +16,9 @@ import javax.swing.JDesktopPane;
  */
 public class DesktopPanel extends JDesktopPane {
 
+    public DesktopPanel() {
+    }
+
     private ImageIcon imageIcon;
 
     public void updateBackground(ImageIcon imageIcon) {
