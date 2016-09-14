@@ -51,7 +51,7 @@ public class MainGUI extends javax.swing.JFrame {
         mnVoice = new javax.swing.JMenu();
         mnEnableVoice = new javax.swing.JRadioButtonMenuItem();
         mnDisableVoice = new javax.swing.JRadioButtonMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        mnOption = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -114,15 +114,15 @@ public class MainGUI extends javax.swing.JFrame {
 
         mnBar.add(mnVoice);
 
-        jMenu1.setText("Opts");
+        mnOption.setText("Opts");
 
         jMenuItem1.setText("Change password");
-        jMenu1.add(jMenuItem1);
+        mnOption.add(jMenuItem1);
 
         jMenuItem2.setText("Change port");
-        jMenu1.add(jMenuItem2);
+        mnOption.add(jMenuItem2);
 
-        mnBar.add(jMenu1);
+        mnBar.add(mnOption);
 
         setJMenuBar(mnBar);
 
@@ -137,7 +137,7 @@ public class MainGUI extends javax.swing.JFrame {
             .addComponent(desktopPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
         );
 
-        pack();
+        setBounds(0, 0, 632, 431);
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnClientModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnClientModeActionPerformed
@@ -146,8 +146,8 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mnClientModeActionPerformed
 
     private void mnServerModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnServerModeActionPerformed
-        CreateServerDialog createServer = new CreateServerDialog(this, true);
-        createServer.setVisible(true);
+        CreateServerDialog crServer = new CreateServerDialog(this, true);
+        crServer.setVisible(true);
     }//GEN-LAST:event_mnServerModeActionPerformed
 
     private void mnChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnChatActionPerformed
@@ -189,6 +189,10 @@ public class MainGUI extends javax.swing.JFrame {
         return btitRemote;
     }
 
+    public void setBtitRemote(BTITRemote btitRemote) {
+        this.btitRemote = btitRemote;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -220,7 +224,6 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.btit.gui.DesktopPanel desktopPanel;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar mnBar;
@@ -232,6 +235,7 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnFileTrans;
     private javax.swing.JMenu mnFuncs;
     private javax.swing.JMenu mnMode;
+    private javax.swing.JMenu mnOption;
     private javax.swing.JMenuItem mnServerMode;
     private javax.swing.JMenu mnVoice;
     // End of variables declaration//GEN-END:variables

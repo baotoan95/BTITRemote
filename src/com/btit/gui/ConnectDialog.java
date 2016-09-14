@@ -152,6 +152,7 @@ public class ConnectDialog extends javax.swing.JDialog {
             String ipAddress = tfIP.getText().trim();
             int port = Integer.parseInt(tfPort.getText());
             String name = tfName.getText();
+            btitRemote.setName(name);
             if (!ipAddress.trim().equals("") && btitRemote.createClient(name, ipAddress, port)) {
                 mainGUI.setTitle(name);
                 mainGUI.getBTITRemote().start();

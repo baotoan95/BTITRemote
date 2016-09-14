@@ -43,7 +43,6 @@ public class BTITRemote extends Thread {
 
     private ArrayList<Socket> socketConnected;
 
-    private String name;
     private int mode;
     private boolean established = false;
 
@@ -62,6 +61,13 @@ public class BTITRemote extends Thread {
         this.mainGUI = mainGUI;
         chatWindow = new ChatWindow(this);
         mainGUI.getDesktopPanel().add(chatWindow);
+    }
+
+    public BTITRemote() {
+    }
+
+    public void setBTITRemoteName(String name) {
+        setName(name);
     }
 
     public boolean createClient(String name, String ip, int port) {
@@ -171,7 +177,7 @@ public class BTITRemote extends Thread {
     public void setEstablished(boolean established) {
         this.established = established;
     }
-    
+
     public static ChatWindow getChatWindow() {
         return chatWindow;
     }

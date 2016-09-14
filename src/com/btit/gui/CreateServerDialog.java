@@ -133,17 +133,18 @@ public class CreateServerDialog extends javax.swing.JDialog {
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         boolean isCreateRoom = crRoom.isSelected();
         int port = Integer.parseInt(tfPort.getText());
-        String name = tfName.getName();
+        String name = tfName.getText();
+        btitRemote.setName(name);
         if (isCreateRoom) {
             if (btitRemote.createRoom(name, port)) {
-                mainGUI.setTitle("BTITR - Room mode");
+                mainGUI.setTitle(name + " - Room mode");
                 mainGUI.getBTITRemote().start();
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Port " + port + " is running. Please choose another port", "Error", JOptionPane.ERROR_MESSAGE, null);
             }
         } else if (btitRemote.createServer(name, port)) {
-            mainGUI.setTitle("BTITR - Server mode");
+            mainGUI.setTitle(name + " - Server mode");
             mainGUI.getBTITRemote().start();
             this.dispose();
         } else {
