@@ -5,13 +5,9 @@
  */
 package com.btit.impls;
 
-import com.btit.gui.ChatWindow;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import com.btit.models.Message;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,21 +16,26 @@ import java.util.logging.Logger;
  *
  * @author BaoToan
  */
-public class MessageSender {
+public class MessageSender extends Thread {
 
     private Socket socket;
     private String name;
+    private String message;
 
-    public MessageSender(Socket socket, String name) {
+    public MessageSender(Socket socket, String name, String message) {
         this.socket = socket;
         this.name = name;
+        this.message = message;
     }
 
-    public void send(String message) {
+    @Override
+    public void run() {
         try {
-            PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-            printWriter.println(name + ": " + message);
-            printWriter.flush();
+            ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+            while(true) {
+                output.writeObject(new Message(name, message));
+                output.reset();
+            }
         } catch (IOException ex) {
             Logger.getLogger(MessageSender.class.getName()).log(Level.SEVERE, null, ex);
         }

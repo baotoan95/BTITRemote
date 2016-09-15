@@ -19,7 +19,7 @@ public class CreateServerDialog extends javax.swing.JDialog {
     private BTITRemote btitRemote;
 
     /**
-     * Creates new form CreateServer
+     * Creates new form CreateServerDialog
      *
      * @param parent
      * @param modal
@@ -27,8 +27,7 @@ public class CreateServerDialog extends javax.swing.JDialog {
     public CreateServerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setResizable(false);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(null);
 
         this.mainGUI = (MainGUI) parent;
         this.btitRemote = mainGUI.getBTITRemote();
@@ -43,26 +42,28 @@ public class CreateServerDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        btnCreate = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
-        tfPort = new javax.swing.JTextField();
-        crRoom = new javax.swing.JCheckBox();
         lbName = new javax.swing.JLabel();
+        lbPort = new javax.swing.JLabel();
         tfName = new javax.swing.JTextField();
+        tfPort = new javax.swing.JTextField();
+        cbCreateRoom = new javax.swing.JCheckBox();
+        btnCancel = new javax.swing.JButton();
+        btnCreate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create server/room");
+        setModal(true);
         setResizable(false);
 
-        jLabel1.setText("Port");
+        lbName.setText("Your name");
 
-        btnCreate.setText("Create");
-        btnCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCreateActionPerformed(evt);
-            }
-        });
+        lbPort.setText("Port");
+
+        tfName.setText("BTIT95");
+
+        tfPort.setText("1995");
+
+        cbCreateRoom.setText("Create a room");
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -71,93 +72,91 @@ public class CreateServerDialog extends javax.swing.JDialog {
             }
         });
 
-        tfPort.setText("1995");
-
-        crRoom.setText("Create a room");
-
-        lbName.setText("Name");
+        btnCreate.setText("Create");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbName)
+                    .addComponent(lbPort))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbName)
+                        .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(tfName))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
-                        .addComponent(btnCreate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(crRoom)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(tfPort))))
-                .addGap(22, 22, 22))
+                        .addComponent(cbCreateRoom)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCreate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCancel)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbName)
                     .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbPort)
+                    .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbCreateRoom))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(crRoom)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel)
                     .addComponent(btnCreate))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnCancelActionPerformed
-
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
-        boolean isCreateRoom = crRoom.isSelected();
+        boolean isCreateRoom = cbCreateRoom.isSelected();
         int port = Integer.parseInt(tfPort.getText());
         String name = tfName.getText();
-        btitRemote.setName(name);
+
         if (isCreateRoom) {
             if (btitRemote.createRoom(name, port)) {
                 mainGUI.setTitle(name + " - Room mode");
-                mainGUI.getBTITRemote().start();
+                btitRemote.start();
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Port " + port + " is running. Please choose another port", "Error", JOptionPane.ERROR_MESSAGE, null);
             }
         } else if (btitRemote.createServer(name, port)) {
             mainGUI.setTitle(name + " - Server mode");
-            mainGUI.getBTITRemote().start();
+            btitRemote.start();
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Port " + port + " is running. Please choose another port", "Error", JOptionPane.ERROR_MESSAGE, null);
         }
     }//GEN-LAST:event_btnCreateActionPerformed
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnCreate;
-    private javax.swing.JCheckBox crRoom;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JCheckBox cbCreateRoom;
     private javax.swing.JLabel lbName;
+    private javax.swing.JLabel lbPort;
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfPort;
     // End of variables declaration//GEN-END:variables

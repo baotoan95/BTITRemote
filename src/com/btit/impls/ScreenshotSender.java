@@ -41,7 +41,7 @@ public class ScreenshotSender extends Thread {
                 Rectangle screenRect = new Rectangle(screenSize);
                 BufferedImage bufferedImage = robot.createScreenCapture(screenRect);
                 sender.writeObject(new ImageIcon(bufferedImage));
-                sender.reset();
+                sender.flush();
             }
         } catch (IOException ex) {
             Logger.getLogger(ScreenshotSender.class.getName()).log(Level.SEVERE, null, ex);

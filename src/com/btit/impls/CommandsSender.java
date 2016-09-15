@@ -81,7 +81,6 @@ public class CommandsSender implements MouseListener, MouseMotionListener, KeyLi
         double x = (desktopPanel.getWidth() / screeenSize.getWidth()) * e.getX();
         double y = (desktopPanel.getHeight() / screeenSize.getHeight()) * e.getY();
         printWriter.println(Commands.MOUSE_MOVE.getCode());
-        System.out.println(x + " - " + y);
         printWriter.println(x);
         printWriter.println(y);
         printWriter.flush();

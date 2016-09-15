@@ -51,9 +51,6 @@ public class MainGUI extends javax.swing.JFrame {
         mnVoice = new javax.swing.JMenu();
         mnEnableVoice = new javax.swing.JRadioButtonMenuItem();
         mnDisableVoice = new javax.swing.JRadioButtonMenuItem();
-        mnOption = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BTITR");
@@ -114,16 +111,6 @@ public class MainGUI extends javax.swing.JFrame {
 
         mnBar.add(mnVoice);
 
-        mnOption.setText("Opts");
-
-        jMenuItem1.setText("Change password");
-        mnOption.add(jMenuItem1);
-
-        jMenuItem2.setText("Change port");
-        mnOption.add(jMenuItem2);
-
-        mnBar.add(mnOption);
-
         setJMenuBar(mnBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,13 +138,14 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mnServerModeActionPerformed
 
     private void mnChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnChatActionPerformed
-        if(btitRemote.isEstablished()) {
+        if (btitRemote.isEstablished()) {
             BTITRemote.chatWindow.setVisible(true);
         }
     }//GEN-LAST:event_mnChatActionPerformed
 
     private void mnDisConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDisConnectActionPerformed
         try {
+            btitRemote.setEstablished(false);
             if (null != btitRemote.getSocket() && !btitRemote.getSocket().isClosed()) {
                 btitRemote.getSocket().close();
             }
@@ -172,6 +160,7 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "An error occurred! Please contact to baotoan.95@gmail.com", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        btitRemote = new BTITRemote(this);
     }//GEN-LAST:event_mnDisConnectActionPerformed
 
     public void established(boolean established) {
@@ -224,8 +213,6 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.btit.gui.DesktopPanel desktopPanel;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar mnBar;
     private javax.swing.JMenuItem mnChat;
     private javax.swing.JMenuItem mnClientMode;
@@ -235,7 +222,6 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnFileTrans;
     private javax.swing.JMenu mnFuncs;
     private javax.swing.JMenu mnMode;
-    private javax.swing.JMenu mnOption;
     private javax.swing.JMenuItem mnServerMode;
     private javax.swing.JMenu mnVoice;
     // End of variables declaration//GEN-END:variables

@@ -10,8 +10,6 @@ import com.btit.gui.ChatWindow;
 import com.btit.init.MainGUI;
 import java.awt.AWTException;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -50,10 +48,13 @@ public class BTITRemote extends Thread {
     private ScreenshotSender screenshotSender;
     private CommandsReceiver commandsReceiver;
     private MessageSender messageSender;
+    private MessageReceiver messageReceiver;
 
-    public BTITRemote(Socket socket) {
+    public BTITRemote(Socket socket, MainGUI mainGUI) {
+        this.mainGUI = mainGUI;
         this.socket = socket;
         chatWindow = new ChatWindow(this);
+        System.out.println(chatWindow);
         mainGUI.getDesktopPanel().add(chatWindow);
     }
 
@@ -63,26 +64,15 @@ public class BTITRemote extends Thread {
         mainGUI.getDesktopPanel().add(chatWindow);
     }
 
-    public BTITRemote() {
-    }
-
-    public void setBTITRemoteName(String name) {
-        setName(name);
-    }
-
     public boolean createClient(String name, String ip, int port) {
         try {
             socket = new Socket(ip, port);
-            socket.setSoTimeout(2000);
+            socket.setSoTimeout(5000);
             this.setSocket(socket);
             this.setMode(RMMode.CLIENT_MODE);
             this.setName(name);
-            setEstablished(true);
+            this.setEstablished(true);
             mainGUI.established(isEstablished());
-
-            // Get default screen device
-            GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            GraphicsDevice gDev = gEnv.getDefaultScreenDevice();
 
             // Get screen dimensions
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -90,6 +80,7 @@ public class BTITRemote extends Thread {
             new CommandsSender(mainGUI.getDesktopPanel(), socket, new Rectangle(screenSize));
             return true;
         } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -99,7 +90,8 @@ public class BTITRemote extends Thread {
             robot = new Robot();
             this.setServerSocket(new ServerSocket(port));
             this.setMode(RMMode.SERVER_MODE);
-            setEstablished(true);
+            this.setEstablished(true);
+            this.setName(name);
             mainGUI.established(isEstablished());
             return true;
         } catch (IOException | AWTException ex) {
@@ -114,10 +106,10 @@ public class BTITRemote extends Thread {
             socketConnected = new ArrayList<>();
             this.setServerSocket(new ServerSocket(port));
             this.setName(name);
+            this.setMode(RMMode.ROOM_MODE);
+            this.setEstablished(true);
             threadQueue = new ArrayBlockingQueue<>(100);
             socketPool = new ThreadPoolExecutor(5, 500, 15, TimeUnit.MINUTES, threadQueue);
-            setMode(RMMode.ROOM_MODE);
-            setEstablished(true);
             mainGUI.established(isEstablished());
             return true;
         } catch (IOException | AWTException ex) {
@@ -127,15 +119,12 @@ public class BTITRemote extends Thread {
     }
 
     public void sendMessage(String message) {
-        if (!chatWindow.isVisible()) {
-            chatWindow.setVisible(true);
-            messageSender.send(message);
-        }
+        messageSender = new MessageSender(socket, getName(), message);
+        messageSender.start();
     }
 
     @Override
     public void run() {
-        new MessageSender(socket, getName());
         if (mode == RMMode.SERVER_MODE.getCode()) {
             try {
                 socket = serverSocket.accept();
@@ -143,6 +132,8 @@ public class BTITRemote extends Thread {
                 screenshotSender.start();
                 commandsReceiver = new CommandsReceiver(socket, robot);
                 commandsReceiver.start();
+//                messageReceiver = new MessageReceiver(chatWindow, socket);
+//                messageReceiver.start();
             } catch (IOException ex) {
                 System.out.println("Server is closed...");
             }
@@ -153,14 +144,15 @@ public class BTITRemote extends Thread {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (true) {
+                    while (established) {
                         try {
                             Socket newConnect = serverSocket.accept();
-                            socketPool.execute(new BTITRemote(newConnect));
+                            socketPool.execute(new BTITRemote(newConnect, mainGUI));
                             socketConnected.add(newConnect);
                             screenshotSender = new ScreenshotSender(newConnect, robot);
                             screenshotSender.start();
-                            System.out.println("A new connect");
+//                            messageReceiver = new MessageReceiver(chatWindow, socket);
+//                            messageReceiver.start();
                         } catch (IOException ex) {
                             Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
                         }

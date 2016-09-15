@@ -14,22 +14,36 @@ import javax.swing.JTextArea;
  * @author BaoToan
  */
 public class ChatWindow extends javax.swing.JInternalFrame {
+
     private BTITRemote btitRemote;
+    private String messages;
+
     /**
      * Creates new form SingleChat
+     *
      * @param btitRemote
      */
     public ChatWindow(BTITRemote btitRemote) {
         initComponents();
         this.btitRemote = btitRemote;
+        this.messages = "";
     }
-    
+
     public JTextArea getTaTypedMess() {
         return taTypedMess;
     }
-    
+
     public JButton getBtnSend() {
         return btnSend;
+    }
+
+    public void setMessages(String messages) {
+        this.messages += messages;
+        taShowMess.setText(this.messages);
+    }
+
+    public String getMessages() {
+        return messages;
     }
 
     /**
@@ -65,6 +79,11 @@ public class ChatWindow extends javax.swing.JInternalFrame {
         scrollPaneTypedMess.setViewportView(taTypedMess);
 
         btnSend.setText("Send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,10 +115,21 @@ public class ChatWindow extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void taTypedKeypressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taTypedKeypressed
-        if(evt.getKeyCode() == 13) {
+        if (evt.getKeyCode() == 10) {
+            taTypedMess.setText("");
+            String newMessage = taTypedMess.getText();
+            btitRemote.sendMessage(newMessage);
+            setMessages(btitRemote.getName() + ": " + newMessage + "\n");
             
         }
     }//GEN-LAST:event_taTypedKeypressed
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        String newMessage = taTypedMess.getText();
+        btitRemote.sendMessage(newMessage);
+        setMessages(btitRemote.getName() + ": " + newMessage + "\n");
+        taTypedMess.setText("");
+    }//GEN-LAST:event_btnSendActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
