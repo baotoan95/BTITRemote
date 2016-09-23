@@ -6,10 +6,9 @@
 package com.btit.impls;
 
 import com.btit.gui.ChatWindow;
-import com.btit.models.Message;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,17 +29,14 @@ public class MessageReceiver extends Thread {
     @Override
     public void run() {
         try {
-            ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-            while(true) {
-                try {
-                    Object object = input.readObject();
-                    if(object instanceof Message) {
-                        Message message = (Message)object;
-                        System.out.println(message.getName() + ": " + message.getMessage());
-                    }
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MessageReceiver.class.getName()).log(Level.SEVERE, null, ex);
+            Scanner scanner = new Scanner(socket.getInputStream());
+            while (true) {
+                if (scanner.hasNext()) {
+                    String message = scanner.nextLine();
+                        chatWindow.setVisible(true);
+                    chatWindow.setMessages(message + "\n");
                 }
+                scanner.reset();
             }
         } catch (IOException ex) {
             Logger.getLogger(MessageReceiver.class.getName()).log(Level.SEVERE, null, ex);

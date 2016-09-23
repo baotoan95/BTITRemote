@@ -5,9 +5,8 @@
  */
 package com.btit.gui;
 
+import com.btit.consts.RMMode;
 import com.btit.impls.BTITRemote;
-import com.btit.init.MainGUI;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -129,22 +128,14 @@ public class CreateServerDialog extends javax.swing.JDialog {
         boolean isCreateRoom = cbCreateRoom.isSelected();
         int port = Integer.parseInt(tfPort.getText());
         String name = tfName.getText();
-
         if (isCreateRoom) {
-            if (btitRemote.createRoom(name, port)) {
-                mainGUI.setTitle(name + " - Room mode");
-                btitRemote.start();
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Port " + port + " is running. Please choose another port", "Error", JOptionPane.ERROR_MESSAGE, null);
-            }
-        } else if (btitRemote.createServer(name, port)) {
-            mainGUI.setTitle(name + " - Server mode");
-            btitRemote.start();
-            this.dispose();
+            btitRemote.createServer(name, port, RMMode.ROOM_MODE);
+            mainGUI.setTitle(name + " - Room mode");
         } else {
-            JOptionPane.showMessageDialog(this, "Port " + port + " is running. Please choose another port", "Error", JOptionPane.ERROR_MESSAGE, null);
+            btitRemote.createServer(name, port, RMMode.SERVER_MODE);
+            mainGUI.setTitle(name + " - Server mode");
         }
+        dispose();
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

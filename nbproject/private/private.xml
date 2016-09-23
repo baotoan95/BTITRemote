@@ -7,8 +7,12 @@
             <file>file:/C:/Users/BaoToan/Documents/NetBeansProjects/BTITR/src/com/btit/gui/MainGUI.java</file>
         </group>
         <group name="Netbean projects">
+            <file>file:/D:/Coding/Netbean%20projects/BTITRemote/src/com/btit/impls/MessageSender.java</file>
+            <file>file:/D:/Coding/Netbean%20projects/BTITRemote/src/com/btit/impls/BTITRemote.java</file>
+            <file>file:/D:/Coding/Netbean%20projects/BTITRemote/src/com/btit/impls/MessageReceiver.java</file>
             <file>file:/D:/Coding/Netbean%20projects/BTITRemote/src/com/btit/impls/ScreenshotReceiver.java</file>
-            <file>file:/D:/Coding/Netbean%20projects/BTITRemote/src/com/btit/impls/CommandsReceiver.java</file>
+            <file>file:/D:/Coding/Netbean%20projects/BTITRemote/src/com/btit/gui/ChatWindow.java</file>
+            <file>file:/D:/Coding/Netbean%20projects/BTITRemote/src/com/btit/impls/ScreenshotSender.java</file>
         </group>
     </open-files>
 </project-private>

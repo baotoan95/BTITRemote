@@ -7,7 +7,7 @@ package com.btit.gui;
 
 import com.btit.impls.BTITRemote;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -27,10 +27,7 @@ public class ChatWindow extends javax.swing.JInternalFrame {
         initComponents();
         this.btitRemote = btitRemote;
         this.messages = "";
-    }
-
-    public JTextArea getTaTypedMess() {
-        return taTypedMess;
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     }
 
     public JButton getBtnSend() {
@@ -57,31 +54,45 @@ public class ChatWindow extends javax.swing.JInternalFrame {
 
         scrollPaneShowMess = new javax.swing.JScrollPane();
         taShowMess = new javax.swing.JTextArea();
-        scrollPaneTypedMess = new javax.swing.JScrollPane();
-        taTypedMess = new javax.swing.JTextArea();
         btnSend = new javax.swing.JButton();
+        tfMessage = new javax.swing.JTextField();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         taShowMess.setEditable(false);
         taShowMess.setColumns(20);
         taShowMess.setRows(5);
         scrollPaneShowMess.setViewportView(taShowMess);
 
-        taTypedMess.setColumns(20);
-        taTypedMess.setRows(5);
-        taTypedMess.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                taTypedKeypressed(evt);
-            }
-        });
-        scrollPaneTypedMess.setViewportView(taTypedMess);
-
         btnSend.setText("Send");
         btnSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSendActionPerformed(evt);
+            }
+        });
+
+        tfMessage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfMessageKeyPressed(evt);
             }
         });
 
@@ -94,8 +105,8 @@ public class ChatWindow extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollPaneShowMess)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollPaneTypedMess, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -106,37 +117,39 @@ public class ChatWindow extends javax.swing.JInternalFrame {
                 .addComponent(scrollPaneShowMess, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scrollPaneTypedMess, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(tfMessage))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void taTypedKeypressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taTypedKeypressed
-        if (evt.getKeyCode() == 10) {
-            taTypedMess.setText("");
-            String newMessage = taTypedMess.getText();
-            btitRemote.sendMessage(newMessage);
-            setMessages(btitRemote.getName() + ": " + newMessage + "\n");
-            
-        }
-    }//GEN-LAST:event_taTypedKeypressed
-
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-        String newMessage = taTypedMess.getText();
+        String newMessage = tfMessage.getText();
         btitRemote.sendMessage(newMessage);
         setMessages(btitRemote.getName() + ": " + newMessage + "\n");
-        taTypedMess.setText("");
+        tfMessage.setText("");
     }//GEN-LAST:event_btnSendActionPerformed
+
+    private void tfMessageKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfMessageKeyPressed
+        if (evt.getKeyCode() == 10) {
+            String newMessage = tfMessage.getText();
+            btitRemote.sendMessage(newMessage);
+            setMessages(btitRemote.getName() + ": " + newMessage + "\n");
+            tfMessage.setText("");
+        }
+    }//GEN-LAST:event_tfMessageKeyPressed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        setVisible(false);
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
     private javax.swing.JScrollPane scrollPaneShowMess;
-    private javax.swing.JScrollPane scrollPaneTypedMess;
     private javax.swing.JTextArea taShowMess;
-    private javax.swing.JTextArea taTypedMess;
+    private javax.swing.JTextField tfMessage;
     // End of variables declaration//GEN-END:variables
 }

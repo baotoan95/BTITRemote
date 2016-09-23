@@ -14,25 +14,24 @@ import javax.swing.JDesktopPane;
  *
  * @author BaoToan
  */
-public class DesktopPanel extends JDesktopPane {
-
-    public DesktopPanel() {
-    }
-
+public class DesktopPane extends JDesktopPane {
     private ImageIcon imageIcon;
 
-    public void updateBackground(ImageIcon imageIcon) {
+    public DesktopPane() {
+        setFocusable(true);
+    }
+    
+    public void updateScreen(ImageIcon imageIcon) {
         this.imageIcon = imageIcon;
-        this.repaint();
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        if(null != imageIcon) {
-            g2d.drawImage(imageIcon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
+        Graphics2D g2d = (Graphics2D)g;
+        if(imageIcon != null) {
+            g2d.drawImage(imageIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
         }
     }
-
+    
 }

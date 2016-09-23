@@ -3,14 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.btit.init;
+package com.btit.gui;
 
-import com.btit.gui.ConnectDialog;
-import com.btit.gui.CreateServerDialog;
-import com.btit.gui.DesktopPanel;
 import com.btit.impls.BTITRemote;
-import java.io.IOException;
-import javax.swing.JOptionPane;
+import javax.swing.JDesktopPane;
 
 /**
  *
@@ -39,7 +35,7 @@ public class MainGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        desktopPanel = new com.btit.gui.DesktopPanel();
+        desktopPanel = new com.btit.gui.DesktopPane();
         mnBar = new javax.swing.JMenuBar();
         mnMode = new javax.swing.JMenu();
         mnClientMode = new javax.swing.JMenuItem();
@@ -87,7 +83,6 @@ public class MainGUI extends javax.swing.JFrame {
         mnFuncs.setText("Funcs");
 
         mnChat.setText("Chat");
-        mnChat.setEnabled(false);
         mnChat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnChatActionPerformed(evt);
@@ -138,29 +133,11 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mnServerModeActionPerformed
 
     private void mnChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnChatActionPerformed
-        if (btitRemote.isEstablished()) {
-            BTITRemote.chatWindow.setVisible(true);
-        }
+        BTITRemote.chatWindow.setVisible(true);
     }//GEN-LAST:event_mnChatActionPerformed
 
     private void mnDisConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDisConnectActionPerformed
-        try {
-            btitRemote.setEstablished(false);
-            if (null != btitRemote.getSocket() && !btitRemote.getSocket().isClosed()) {
-                btitRemote.getSocket().close();
-            }
-            if (null != btitRemote.getServerSocket() && !btitRemote.getServerSocket().isClosed()) {
-                btitRemote.getServerSocket().close();
-            }
-            if (null != btitRemote.getSocketPool() && !btitRemote.getSocketPool().isShutdown()) {
-                btitRemote.getSocketPool().shutdown();
-            }
-            setTitle("BTITR");
-            established(false);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "An error occurred! Please contact to baotoan.95@gmail.com", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        btitRemote = new BTITRemote(this);
+        
     }//GEN-LAST:event_mnDisConnectActionPerformed
 
     public void established(boolean established) {
@@ -170,7 +147,7 @@ public class MainGUI extends javax.swing.JFrame {
         mnChat.setEnabled(established);
     }
 
-    public DesktopPanel getDesktopPanel() {
+    public JDesktopPane getDesktopPanel() {
         return desktopPanel;
     }
 
@@ -182,37 +159,8 @@ public class MainGUI extends javax.swing.JFrame {
         this.btitRemote = btitRemote;
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new MainGUI().setVisible(true);
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.btit.gui.DesktopPanel desktopPanel;
+    private com.btit.gui.DesktopPane desktopPanel;
     private javax.swing.JMenuBar mnBar;
     private javax.swing.JMenuItem mnChat;
     private javax.swing.JMenuItem mnClientMode;

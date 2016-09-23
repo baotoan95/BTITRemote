@@ -44,7 +44,6 @@
             <MenuItem class="javax.swing.JMenuItem" name="mnChat">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Chat"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnChatActionPerformed"/>
@@ -116,7 +115,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="com.btit.gui.DesktopPanel" name="desktopPanel">
+    <Container class="com.btit.gui.DesktopPane" name="desktopPanel">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>

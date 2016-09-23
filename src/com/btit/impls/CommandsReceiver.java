@@ -34,19 +34,22 @@ public class CommandsReceiver extends Thread {
                 if (scanner.hasNext()) {
                     int command = scanner.nextInt();
                     switch (command) {
-                        case -1: 
-                            robot.mouseMove((int) scanner.nextDouble(), (int) scanner.nextDouble());
+                        case -1:
+                            int x = (int) scanner.nextDouble();
+                            int y = (int) scanner.nextDouble();
+                            System.out.println(x + " - " + y);
+                            robot.mouseMove(x, y);
                             break;
-                        case -2: 
+                        case -2:
                             robot.mouseWheel(scanner.nextInt());
                             break;
-                        case -3: 
+                        case -3:
                             robot.mouseRelease(scanner.nextInt());
                             break;
-                        case -4: 
+                        case -4:
                             robot.keyPress(scanner.nextInt());
                             break;
-                        case -5: 
+                        case -5:
                             robot.keyRelease(scanner.nextInt());
                             break;
                     }

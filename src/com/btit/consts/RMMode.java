@@ -12,8 +12,7 @@ package com.btit.consts;
 public enum RMMode {
     CLIENT_MODE(1),
     SERVER_MODE(2),
-    ROOM_MODE(3),
-    ROOMMATE(4);
+    ROOM_MODE(3);
     
     private int code;
 

@@ -7,7 +7,6 @@ package com.btit.gui;
 
 import com.btit.consts.RMMode;
 import com.btit.impls.BTITRemote;
-import com.btit.init.MainGUI;
 import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
@@ -50,7 +49,6 @@ public class ConnectDialog extends javax.swing.JDialog {
         tfName = new javax.swing.JTextField();
         tfIP = new javax.swing.JTextField();
         tfPort = new javax.swing.JTextField();
-        cbConnectRoom = new javax.swing.JCheckBox();
         btnCancel = new javax.swing.JButton();
         btnConnect = new javax.swing.JButton();
 
@@ -64,11 +62,11 @@ public class ConnectDialog extends javax.swing.JDialog {
 
         lbPort.setText("Port");
 
-        tfIP.setText("192.168.1.3");
+        tfName.setText("Toan");
+
+        tfIP.setText("192.168.100.147");
 
         tfPort.setText("1995");
-
-        cbConnectRoom.setText("Connect to a room");
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -90,29 +88,27 @@ public class ConnectDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbName)
                         .addGap(18, 18, 18)
-                        .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfName))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbIP)
                             .addComponent(lbPort))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(tfIP)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbConnectRoom)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnConnect)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCancel)
+                                .addGap(0, 133, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnConnect)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancel)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -129,8 +125,7 @@ public class ConnectDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPort)
-                    .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbConnectRoom))
+                    .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
@@ -146,13 +141,10 @@ public class ConnectDialog extends javax.swing.JDialog {
             String ipAddress = tfIP.getText().trim();
             int port = Integer.parseInt(tfPort.getText());
             String name = tfName.getText();
-            if (!ipAddress.trim().equals("") && btitRemote.createClient(name, ipAddress, port)) {
-                mainGUI.setTitle(name);
-                mainGUI.getBTITRemote().start();
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(mainGUI, "Unknown IP address", "Error", JOptionPane.ERROR_MESSAGE, null);
-            }
+            
+            btitRemote.createClient(name, ipAddress, port);
+            mainGUI.setTitle(name + " - Client mode");
+            dispose();
         } catch (NumberFormatException | HeadlessException e) {
             JOptionPane.showMessageDialog(mainGUI, "Port incorrect", "Error", JOptionPane.ERROR_MESSAGE, null);
         }
@@ -165,7 +157,6 @@ public class ConnectDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnConnect;
-    private javax.swing.JCheckBox cbConnectRoom;
     private javax.swing.JLabel lbIP;
     private javax.swing.JLabel lbName;
     private javax.swing.JLabel lbPort;
