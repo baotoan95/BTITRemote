@@ -20,10 +20,17 @@ public class MessageReceiver extends Thread {
 
     private ChatWindow chatWindow;
     private Socket socket;
+    private MessageSender messageSender;
 
     public MessageReceiver(ChatWindow chatWindow, Socket socket) {
-        this.socket = socket;
         this.chatWindow = chatWindow;
+        this.socket = socket;
+    }
+
+    public MessageReceiver(ChatWindow chatWindow, Socket socket, MessageSender messageSender) {
+        this.chatWindow = chatWindow;
+        this.socket = socket;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -33,8 +40,15 @@ public class MessageReceiver extends Thread {
             while (true) {
                 if (scanner.hasNext()) {
                     String message = scanner.nextLine();
-                        chatWindow.setVisible(true);
+                    chatWindow.setVisible(true);
                     chatWindow.setMessages(message + "\n");
+                    chatWindow.getDesktopPane().getDesktopManager().deiconifyFrame(chatWindow);
+                    chatWindow.moveToFront();
+                    if (null != messageSender) {
+                        messageSender.setExceptSocket(socket);
+                        messageSender.send(message);
+                        messageSender.setExceptSocket(null);
+                    }
                 }
                 scanner.reset();
             }

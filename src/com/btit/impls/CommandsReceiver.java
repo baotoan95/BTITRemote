@@ -37,19 +37,22 @@ public class CommandsReceiver extends Thread {
                         case -1:
                             int x = (int) scanner.nextDouble();
                             int y = (int) scanner.nextDouble();
-                            System.out.println(x + " - " + y);
                             robot.mouseMove(x, y);
                             break;
                         case -2:
-                            robot.mouseWheel(scanner.nextInt());
+                            robot.mousePress(scanner.nextInt());
                             break;
                         case -3:
                             robot.mouseRelease(scanner.nextInt());
                             break;
                         case -4:
-                            robot.keyPress(scanner.nextInt());
+                            System.out.println(scanner.nextInt());
+                            robot.mouseWheel(scanner.nextInt());
                             break;
                         case -5:
+                            robot.keyPress(scanner.nextInt());
+                            break;
+                        case -6:
                             robot.keyRelease(scanner.nextInt());
                             break;
                     }

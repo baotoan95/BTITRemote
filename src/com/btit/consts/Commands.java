@@ -11,9 +11,9 @@ package com.btit.consts;
  */
 public enum Commands {
     MOUSE_MOVE(-1),
-    MOUSE_DRAG(-2),
-    MOUSE_PRESS(-3),
-    MOUSE_RELEASE(-4),
+    MOUSE_PRESS(-2),
+    MOUSE_RELEASE(-3),
+    MOUSE_WHEEL(-4),
     PRESS_KEY(-5),
     RELEASE_KEY(-6);
 

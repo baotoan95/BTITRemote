@@ -44,6 +44,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="mnChat">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Chat"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnChatActionPerformed"/>
@@ -53,6 +54,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="File transfer"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnFileTransActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -66,11 +70,17 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Enable"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnEnableVoiceActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="mnDisableVoice">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Disable"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnDisableVoiceActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

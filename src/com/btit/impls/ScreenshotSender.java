@@ -5,7 +5,6 @@
  */
 package com.btit.impls;
 
-import com.btit.consts.RMMode;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;

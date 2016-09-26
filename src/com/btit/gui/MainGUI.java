@@ -83,6 +83,7 @@ public class MainGUI extends javax.swing.JFrame {
         mnFuncs.setText("Funcs");
 
         mnChat.setText("Chat");
+        mnChat.setEnabled(false);
         mnChat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnChatActionPerformed(evt);
@@ -91,6 +92,11 @@ public class MainGUI extends javax.swing.JFrame {
         mnFuncs.add(mnChat);
 
         mnFileTrans.setText("File transfer");
+        mnFileTrans.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnFileTransActionPerformed(evt);
+            }
+        });
         mnFuncs.add(mnFileTrans);
 
         mnBar.add(mnFuncs);
@@ -99,9 +105,19 @@ public class MainGUI extends javax.swing.JFrame {
 
         mnEnableVoice.setSelected(true);
         mnEnableVoice.setText("Enable");
+        mnEnableVoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnEnableVoiceActionPerformed(evt);
+            }
+        });
         mnVoice.add(mnEnableVoice);
 
         mnDisableVoice.setText("Disable");
+        mnDisableVoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnDisableVoiceActionPerformed(evt);
+            }
+        });
         mnVoice.add(mnDisableVoice);
 
         mnBar.add(mnVoice);
@@ -137,8 +153,26 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mnChatActionPerformed
 
     private void mnDisConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDisConnectActionPerformed
-        
+        btitRemote = new BTITRemote(this);
+        established(false);
     }//GEN-LAST:event_mnDisConnectActionPerformed
+
+    private void mnEnableVoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEnableVoiceActionPerformed
+        btitRemote.enableSound(true);
+        mnDisableVoice.setSelected(false);
+        mnEnableVoice.setSelected(true);
+    }//GEN-LAST:event_mnEnableVoiceActionPerformed
+
+    private void mnDisableVoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDisableVoiceActionPerformed
+        btitRemote.enableSound(false);
+        mnDisableVoice.setSelected(true);
+        mnEnableVoice.setSelected(false);
+    }//GEN-LAST:event_mnDisableVoiceActionPerformed
+
+    private void mnFileTransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFileTransActionPerformed
+        FileTransferDialog file = new FileTransferDialog(this, false);
+        file.setVisible(true);
+    }//GEN-LAST:event_mnFileTransActionPerformed
 
     public void established(boolean established) {
         mnClientMode.setEnabled(!established);

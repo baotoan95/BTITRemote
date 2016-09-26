@@ -39,6 +39,8 @@ public class BTITRemote extends Thread {
 
     private Socket mainSocket;
     private MessageSender messageSender;
+    private SoundSender soundSender;
+    private SoundReceiver soundReceiver;
 
     public BTITRemote(MainGUI mainGUI) {
         this.mainGUI = mainGUI;
@@ -53,6 +55,7 @@ public class BTITRemote extends Thread {
             setName(name);
             setPort(port);
             start();
+            mainGUI.established(true);
         } catch (IOException ex) {
             Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,6 +69,7 @@ public class BTITRemote extends Thread {
             setHost(host);
             setPort(port);
             start();
+            mainGUI.established(true);
         } catch (IOException ex) {
             Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,6 +77,11 @@ public class BTITRemote extends Thread {
 
     public void sendMessage(String message) {
         messageSender.send(message);
+    }
+
+    public void enableSound(boolean isEnable) {
+        soundSender.setIsRecording(isEnable);
+        soundReceiver.setIsListening(isEnable);
     }
 
     @Override
@@ -95,6 +104,12 @@ public class BTITRemote extends Thread {
                 Socket chatSocket = serverSocket.accept();
                 messageSender = new MessageSender(chatSocket, getName());
                 new MessageReceiver(chatWindow, chatSocket).start();
+
+                Socket soundSocket = serverSocket.accept();
+                soundReceiver = new SoundReceiver(soundSocket);
+                soundReceiver.start();
+                soundSender = new SoundSender(soundSocket);
+                soundSender.start();
             } catch (IOException | AWTException ex) {
                 Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -111,10 +126,19 @@ public class BTITRemote extends Thread {
                 Socket chatSocket = new Socket(host, port);
                 messageSender = new MessageSender(chatSocket, getName());
                 new MessageReceiver(chatWindow, chatSocket).start();
+
+                // Sound task
+                Socket soundSocket = new Socket(host, port);
+                soundReceiver = new SoundReceiver(soundSocket);
+                soundReceiver.start();
+                soundSender = new SoundSender(soundSocket);
+                soundSender.start();
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (mode == RMMode.ROOM_MODE) {
+            messageSender = new MessageSender(getName());
+            
             while (true) {
                 try {
                     // Send screenshot and commands
@@ -130,8 +154,17 @@ public class BTITRemote extends Thread {
 
                     // Chat task
                     Socket chatSocket = serverSocket.accept();
-                    messageSender = new MessageSender(chatSocket, getName());
-                    new MessageReceiver(chatWindow, chatSocket).start();
+                    messageSender.addClient(chatSocket);
+                    new MessageReceiver(chatWindow, chatSocket, messageSender).start();
+
+                    // Sound task
+                    Socket soundSocket = serverSocket.accept();
+                    soundReceiver = new SoundReceiver(soundSocket);
+                    soundReceiver.start();
+                    soundSender = new SoundSender(soundSocket);
+                    soundSender.start();
+
+                    System.out.println("Connected");
                 } catch (IOException | AWTException ex) {
                     Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
                 }

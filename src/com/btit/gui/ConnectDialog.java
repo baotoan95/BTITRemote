@@ -64,7 +64,7 @@ public class ConnectDialog extends javax.swing.JDialog {
 
         tfName.setText("Toan");
 
-        tfIP.setText("192.168.100.147");
+        tfIP.setText("192.168.137.175");
 
         tfPort.setText("1995");
 

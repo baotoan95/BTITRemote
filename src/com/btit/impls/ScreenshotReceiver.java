@@ -35,9 +35,8 @@ public class ScreenshotReceiver extends Thread {
     public void run() {
         try {
             while (isActive) {
-                ImageIcon imageIcon;
                 try {
-                    imageIcon = (ImageIcon) objectInputStream.readObject();
+                    ImageIcon imageIcon = (ImageIcon) objectInputStream.readObject();
                     desktopPanel.updateScreen(imageIcon);
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(ScreenshotReceiver.class.getName()).log(Level.SEVERE, null, ex);
