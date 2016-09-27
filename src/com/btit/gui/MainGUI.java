@@ -43,7 +43,6 @@ public class MainGUI extends javax.swing.JFrame {
         mnDisConnect = new javax.swing.JMenuItem();
         mnFuncs = new javax.swing.JMenu();
         mnChat = new javax.swing.JMenuItem();
-        mnFileTrans = new javax.swing.JMenuItem();
         mnVoice = new javax.swing.JMenu();
         mnEnableVoice = new javax.swing.JRadioButtonMenuItem();
         mnDisableVoice = new javax.swing.JRadioButtonMenuItem();
@@ -90,14 +89,6 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
         mnFuncs.add(mnChat);
-
-        mnFileTrans.setText("File transfer");
-        mnFileTrans.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnFileTransActionPerformed(evt);
-            }
-        });
-        mnFuncs.add(mnFileTrans);
 
         mnBar.add(mnFuncs);
 
@@ -169,11 +160,6 @@ public class MainGUI extends javax.swing.JFrame {
         mnEnableVoice.setSelected(false);
     }//GEN-LAST:event_mnDisableVoiceActionPerformed
 
-    private void mnFileTransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFileTransActionPerformed
-        FileTransferDialog file = new FileTransferDialog(this, false);
-        file.setVisible(true);
-    }//GEN-LAST:event_mnFileTransActionPerformed
-
     public void established(boolean established) {
         mnClientMode.setEnabled(!established);
         mnServerMode.setEnabled(!established);
@@ -201,7 +187,6 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnDisConnect;
     private javax.swing.JRadioButtonMenuItem mnDisableVoice;
     private javax.swing.JRadioButtonMenuItem mnEnableVoice;
-    private javax.swing.JMenuItem mnFileTrans;
     private javax.swing.JMenu mnFuncs;
     private javax.swing.JMenu mnMode;
     private javax.swing.JMenuItem mnServerMode;
