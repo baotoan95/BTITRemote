@@ -5,7 +5,14 @@
  */
 package com.btit.gui;
 
+import com.btit.consts.RMMode;
 import com.btit.impls.BTITRemote;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 
 /**
@@ -46,9 +53,12 @@ public class MainGUI extends javax.swing.JFrame {
         mnVoice = new javax.swing.JMenu();
         mnEnableVoice = new javax.swing.JRadioButtonMenuItem();
         mnDisableVoice = new javax.swing.JRadioButtonMenuItem();
+        mnHelp = new javax.swing.JMenu();
+        mnGuide = new javax.swing.JMenuItem();
+        mnAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("BTITR");
+        setTitle("BTITRemote");
 
         mnMode.setText("Remote");
 
@@ -96,6 +106,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         mnEnableVoice.setSelected(true);
         mnEnableVoice.setText("Enable");
+        mnEnableVoice.setEnabled(false);
         mnEnableVoice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnEnableVoiceActionPerformed(evt);
@@ -104,6 +115,7 @@ public class MainGUI extends javax.swing.JFrame {
         mnVoice.add(mnEnableVoice);
 
         mnDisableVoice.setText("Disable");
+        mnDisableVoice.setEnabled(false);
         mnDisableVoice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnDisableVoiceActionPerformed(evt);
@@ -112,6 +124,26 @@ public class MainGUI extends javax.swing.JFrame {
         mnVoice.add(mnDisableVoice);
 
         mnBar.add(mnVoice);
+
+        mnHelp.setText("Help");
+
+        mnGuide.setText("Guide");
+        mnGuide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnGuideActionPerformed(evt);
+            }
+        });
+        mnHelp.add(mnGuide);
+
+        mnAbout.setText("About");
+        mnAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnAboutActionPerformed(evt);
+            }
+        });
+        mnHelp.add(mnAbout);
+
+        mnBar.add(mnHelp);
 
         setJMenuBar(mnBar);
 
@@ -144,8 +176,13 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mnChatActionPerformed
 
     private void mnDisConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDisConnectActionPerformed
-        btitRemote = new BTITRemote(this);
-        established(false);
+        if(btitRemote.getMode() == RMMode.ROOM_MODE) {
+            BTITRemote.CONNECTED = false;
+            btitRemote = new BTITRemote(this);
+            established(false);
+        } else {
+            btitRemote.disConnect();
+        }
     }//GEN-LAST:event_mnDisConnectActionPerformed
 
     private void mnEnableVoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEnableVoiceActionPerformed
@@ -160,11 +197,29 @@ public class MainGUI extends javax.swing.JFrame {
         mnEnableVoice.setSelected(false);
     }//GEN-LAST:event_mnDisableVoiceActionPerformed
 
+    private void mnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAboutActionPerformed
+        new AboutDialog(this, true).setVisible(true);
+    }//GEN-LAST:event_mnAboutActionPerformed
+
+    private void mnGuideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnGuideActionPerformed
+        try {
+            Desktop.getDesktop().browse(new URI("https://github.com/baotoan95/BTITRemote"));
+        } catch (IOException | URISyntaxException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_mnGuideActionPerformed
+
     public void established(boolean established) {
         mnClientMode.setEnabled(!established);
         mnServerMode.setEnabled(!established);
         mnDisConnect.setEnabled(established);
         mnChat.setEnabled(established);
+        mnDisableVoice.setEnabled(established);
+        mnEnableVoice.setEnabled(established);
+        
+        if(!established) {
+            setTitle("BTITRemote");
+        }
     }
 
     public JDesktopPane getDesktopPanel() {
@@ -181,6 +236,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.btit.gui.DesktopPane desktopPanel;
+    private javax.swing.JMenuItem mnAbout;
     private javax.swing.JMenuBar mnBar;
     private javax.swing.JMenuItem mnChat;
     private javax.swing.JMenuItem mnClientMode;
@@ -188,6 +244,8 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem mnDisableVoice;
     private javax.swing.JRadioButtonMenuItem mnEnableVoice;
     private javax.swing.JMenu mnFuncs;
+    private javax.swing.JMenuItem mnGuide;
+    private javax.swing.JMenu mnHelp;
     private javax.swing.JMenu mnMode;
     private javax.swing.JMenuItem mnServerMode;
     private javax.swing.JMenu mnVoice;

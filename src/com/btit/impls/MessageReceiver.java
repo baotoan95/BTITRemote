@@ -37,7 +37,7 @@ public class MessageReceiver extends Thread {
     public void run() {
         try {
             Scanner scanner = new Scanner(socket.getInputStream());
-            while (true) {
+            while (BTITRemote.CONNECTED) {
                 if (scanner.hasNext()) {
                     String message = scanner.nextLine();
                     chatWindow.setVisible(true);

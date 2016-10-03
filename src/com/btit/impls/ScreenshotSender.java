@@ -39,7 +39,7 @@ public class ScreenshotSender extends Thread {
         try {
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectOutputStream.writeObject(screenRect);
-            while (isActive) {
+            while (isActive && BTITRemote.CONNECTED) {
                 // Capture screen
                 BufferedImage image = robot.createScreenCapture(screenRect);
                 ImageIcon imageIcon = new ImageIcon(image);

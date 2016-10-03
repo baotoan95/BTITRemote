@@ -30,7 +30,7 @@ public class CommandsReceiver extends Thread {
     public void run() {
         try {
             Scanner scanner = new Scanner(socket.getInputStream());
-            while (true) {
+            while (BTITRemote.CONNECTED) {
                 if (scanner.hasNext()) {
                     int command = scanner.nextInt();
                     switch (command) {

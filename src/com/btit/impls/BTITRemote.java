@@ -21,33 +21,36 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author BaoToan
  */
 public class BTITRemote extends Thread {
-
+    
     private MainGUI mainGUI;
     public static ChatWindow chatWindow;
-
+    
     private String host;
     private int port;
     private RMMode mode;
-
+    
     private ServerSocket serverSocket;
-
+    
     private Socket mainSocket;
     private MessageSender messageSender;
     private SoundSender soundSender;
     private SoundReceiver soundReceiver;
-
+    
+    public static boolean CONNECTED = false;
+    
     public BTITRemote(MainGUI mainGUI) {
         this.mainGUI = mainGUI;
         chatWindow = new ChatWindow(this);
         mainGUI.getDesktopPanel().add(chatWindow);
     }
-
+    
     public void createServer(String name, int port, RMMode rmMode) {
         try {
             serverSocket = new ServerSocket(port);
@@ -56,11 +59,12 @@ public class BTITRemote extends Thread {
             setPort(port);
             start();
             mainGUI.established(true);
+            BTITRemote.CONNECTED = true;
         } catch (IOException ex) {
             Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void createClient(String name, String host, int port) {
         try {
             mainSocket = new Socket(host, port);
@@ -70,20 +74,46 @@ public class BTITRemote extends Thread {
             setPort(port);
             start();
             mainGUI.established(true);
+            BTITRemote.CONNECTED = true;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(mainGUI, "You don't have permission ", "Connection error", JOptionPane.ERROR_MESSAGE);
+            mainGUI.established(false);
+        }
+    }
+    
+    public void disConnect() {
+        try {
+            if(mode == RMMode.SERVER_MODE) {
+                BTITRemote.CONNECTED = false;
+                serverSocket.close();
+                mainGUI.setBtitRemote(new BTITRemote(mainGUI));
+                mainGUI.established(false);
+            }
+            if(mode == RMMode.CLIENT_MODE) {
+                BTITRemote.CONNECTED = false;
+                mainSocket.close();
+                mainGUI.established(false);
+            }
         } catch (IOException ex) {
             Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void sendMessage(String message) {
         messageSender.send(message);
     }
-
+    
     public void enableSound(boolean isEnable) {
         soundSender.setIsRecording(isEnable);
         soundReceiver.setIsListening(isEnable);
+        if (isEnable) {
+            soundSender = new SoundSender(soundSender.getSocket(), mainGUI);
+            soundSender.start();
+            soundReceiver = new SoundReceiver(soundReceiver.getSocket());
+            soundReceiver.start();
+        }
     }
-
+    
     @Override
     public void run() {
         if (mode == RMMode.SERVER_MODE) {
@@ -96,7 +126,7 @@ public class BTITRemote extends Thread {
                 // Get screen dimensions
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 Rectangle rectangle = new Rectangle(dim);
-
+                
                 new ScreenshotSender(socket, new Robot(gDev), rectangle).start();
                 new CommandsReceiver(socket, new Robot(gDev)).start();
 
@@ -104,14 +134,15 @@ public class BTITRemote extends Thread {
                 Socket chatSocket = serverSocket.accept();
                 messageSender = new MessageSender(chatSocket, getName());
                 new MessageReceiver(chatWindow, chatSocket).start();
-
+                
+                // Sound task
                 Socket soundSocket = serverSocket.accept();
                 soundReceiver = new SoundReceiver(soundSocket);
                 soundReceiver.start();
-                soundSender = new SoundSender(soundSocket);
+                soundSender = new SoundSender(soundSocket, mainGUI);
                 soundSender.start();
             } catch (IOException | AWTException ex) {
-                Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
+                //Nothing
             }
         } else if (mode == RMMode.CLIENT_MODE) {
             ObjectInputStream objectInputStream = null;
@@ -131,7 +162,7 @@ public class BTITRemote extends Thread {
                 Socket soundSocket = new Socket(host, port);
                 soundReceiver = new SoundReceiver(soundSocket);
                 soundReceiver.start();
-                soundSender = new SoundSender(soundSocket);
+                soundSender = new SoundSender(soundSocket, mainGUI);
                 soundSender.start();
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
@@ -149,7 +180,7 @@ public class BTITRemote extends Thread {
                     // Get screen dimensions
                     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                     Rectangle rectangle = new Rectangle(dim);
-
+                    
                     new ScreenshotSender(socket, new Robot(gDev), rectangle).start();
 
                     // Chat task
@@ -161,16 +192,13 @@ public class BTITRemote extends Thread {
                     Socket soundSocket = serverSocket.accept();
                     soundReceiver = new SoundReceiver(soundSocket);
                     soundReceiver.start();
-                    soundSender = new SoundSender(soundSocket);
+                    soundSender = new SoundSender(soundSocket, mainGUI);
                     soundSender.start();
-
-                    System.out.println("Connected");
                 } catch (IOException | AWTException ex) {
-                    Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
+//                    Logger.getLogger(BTITRemote.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-
     }
 
     /**
@@ -221,5 +249,5 @@ public class BTITRemote extends Thread {
     public void setMode(RMMode mode) {
         this.mode = mode;
     }
-
+    
 }

@@ -5,6 +5,7 @@
  */
 package com.btit.impls;
 
+import com.btit.gui.MainGUI;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -26,18 +27,18 @@ public class SoundSender extends Thread {
     private TargetDataLine targetDataLine;
     private AudioFormat format;
     private boolean isRecording = true;
+    private MainGUI mainGUI;
 
-    public SoundSender(Socket socket) {
+    public SoundSender(Socket socket, MainGUI mainGui) {
         try {
             this.socket = socket;
             format = getaudioformat();
             DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
             targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
-
+            this.mainGUI = mainGui;
         } catch (LineUnavailableException ex) {
             Logger.getLogger(SoundSender.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     public static AudioFormat getaudioformat() {
@@ -56,17 +57,18 @@ public class SoundSender extends Thread {
             byte[] buffer = new byte[512];
             targetDataLine.open();
             targetDataLine.start();
-            while (true) {
-                if (isRecording) {
-                    targetDataLine.read(buffer, 0, buffer.length);
-                    output.write(buffer);
-                }
+            while (isRecording && BTITRemote.CONNECTED) {
+                targetDataLine.read(buffer, 0, buffer.length);
+                output.write(buffer);
+                output.flush();
             }
         } catch (LineUnavailableException | IOException ex) {
-            // Nothing
+            System.out.println("");
+            mainGUI.getBTITRemote().disConnect();
         }
-        targetDataLine.close();
         targetDataLine.drain();
+        targetDataLine.close();
+        
     }
 
     public void setIsRecording(boolean isRecording) {
@@ -75,6 +77,10 @@ public class SoundSender extends Thread {
 
     public boolean isIsRecording() {
         return isRecording;
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 
 }

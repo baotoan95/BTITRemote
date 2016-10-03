@@ -7,6 +7,10 @@ package com.btit.gui;
 
 import com.btit.consts.RMMode;
 import com.btit.impls.BTITRemote;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -128,12 +132,17 @@ public class CreateServerDialog extends javax.swing.JDialog {
         boolean isCreateRoom = cbCreateRoom.isSelected();
         int port = Integer.parseInt(tfPort.getText());
         String name = tfName.getText();
-        if (isCreateRoom) {
-            btitRemote.createServer(name, port, RMMode.ROOM_MODE);
-            mainGUI.setTitle(name + " - Room mode");
-        } else {
-            btitRemote.createServer(name, port, RMMode.SERVER_MODE);
-            mainGUI.setTitle(name + " - Server mode");
+        try {
+            InetAddress localhost = InetAddress.getLocalHost();
+            if (isCreateRoom) {
+                btitRemote.createServer(name, port, RMMode.ROOM_MODE);
+                mainGUI.setTitle(name + " - Room mode - " + localhost.getHostAddress());
+            } else {
+                btitRemote.createServer(name, port, RMMode.SERVER_MODE);
+                mainGUI.setTitle(name + " - Server mode - " + localhost.getHostAddress());
+            }
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(CreateServerDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
         dispose();
     }//GEN-LAST:event_btnCreateActionPerformed

@@ -51,20 +51,22 @@ public class SoundReceiver extends Thread {
     public void run() {
         try {
             BufferedInputStream input = new BufferedInputStream(socket.getInputStream());
-            sourceDataLine.open();
+            sourceDataLine.open(format);
             sourceDataLine.start();
             byte[] data = new byte[512];
-            while (true) {
-                if (isListening) {
-                    input.read(data, 0, data.length);
+            while (isListening && BTITRemote.CONNECTED) {
+                int i = input.read(data, 0, data.length);
+                if(i > 0) {
                     sourceDataLine.write(data, 0, data.length);
                 }
             }
         } catch (IOException | LineUnavailableException ex) {
-            // Nothing
+//            ex.printStackTrace();
         }
-        sourceDataLine.close();
+        sourceDataLine.flush();
         sourceDataLine.drain();
+        sourceDataLine.close();
+        
     }
 
     public void setIsListening(boolean isListening) {
@@ -75,4 +77,8 @@ public class SoundReceiver extends Thread {
         return isListening;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+    
 }

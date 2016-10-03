@@ -34,7 +34,7 @@ public class ScreenshotReceiver extends Thread {
     @Override
     public void run() {
         try {
-            while (isActive) {
+            while (isActive && BTITRemote.CONNECTED) {
                 try {
                     ImageIcon imageIcon = (ImageIcon) objectInputStream.readObject();
                     desktopPanel.updateScreen(imageIcon);
@@ -45,7 +45,6 @@ public class ScreenshotReceiver extends Thread {
         } catch (SocketException ex) {
             JOptionPane.showMessageDialog(desktopPanel, "Server is closed!!!", "Connection fail", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(ScreenshotReceiver.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(desktopPanel, "You don't have permission to access this IP", "Timeout", JOptionPane.INFORMATION_MESSAGE);
         }
     }
